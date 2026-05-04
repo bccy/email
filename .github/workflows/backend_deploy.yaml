@@ -67,7 +67,7 @@ jobs:
           if [ "$debug_mode" = "true" ]; then
             pnpm run deploy
           else
-            if pnpm run deploy >/dev/null 2>&1; then
+              if pnpm run deploy; then
               echo "Deploy succeeded"
             else
               code=$?
