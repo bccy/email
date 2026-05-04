@@ -1,4 +1,4 @@
-name = "cloudflare_temp_email"
+name = "email"
 main = "src/worker.ts"
 compatibility_date = "2025-04-01"
 compatibility_flags = [ "nodejs_compat" ]
@@ -21,7 +21,7 @@ keep_vars = true
 # send_email = [
 #    { name = "SEND_MAIL" },
 # ]
-# SEND_MAIL_DOMAINS = ["example.com", "mail.example.com"]
+# SEND_MAIL_DOMAINS = ["0392yy.cn", "mail.example.com"]
 
 [vars]
 # DEFAULT_LANG = "zh"
