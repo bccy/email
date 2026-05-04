@@ -5,7 +5,7 @@ compatibility_flags = [ "nodejs_compat" ]
 keep_vars = true
 # if you want use custom_domain, you need to add routes
 # routes = [
-# 	{ pattern = "temp-email-api.xxxxx.xyz", custom_domain = true },
+# 	{ pattern = "email.0392yy.cn", custom_domain = true },
 # ]
 
 # if you want deploy worker with frontend assets, you need to add assets
