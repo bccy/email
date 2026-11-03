@@ -54,7 +54,28 @@ jobs:
           cd worker/
           # ✅ 修复核心：使用环境变量写入，避免 Shell 解析特殊字符
           printf '%s\n' "$WRANGLER_TOML_CONTENT" > wrangler.toml
-          
+
+          # 临时修复：yiyang.uno 域名已从注册局删除（DNS NXDOMAIN、RDAP 404），
+          # 保留它会令 wrangler 报 Could not find zone 导致部署失败。
+          # 恢复该域名后请删除本段（路由与 DOMAINS/DEFAULT_DOMAINS 里的条目）。
+          sed -i -E \
+            -e '/pattern[[:space:]]*=[[:space:]]*"email\.yiyang\.uno"/d' \
+            -e '/^[[:space:]]*"yiyang\.uno"[[:space:]]*,?[[:space:]]*$/d' \
+            -e 's/[[:space:]]*,[[:space:]]*"yiyang\.uno"//g' \
+            -e 's/"yiyang\.uno"[[:space:]]*,[[:space:]]*//g' \
+            -e 's/[[:space:]]*,[[:space:]]*\]/ ]/g' \
+            wrangler.toml
+          if grep -q 'yiyang\.uno' wrangler.toml; then
+            echo "::error::wrangler.toml 仍有 yiyang.uno 残留，拒绝部署"
+            grep -n 'yiyang\.uno' wrangler.toml
+            exit 1
+          fi
+          grep -q 'email\.0392yy\.cn' wrangler.toml || {
+            echo "::error::wrangler.toml 缺少 email.0392yy.cn 路由，拒绝部署"
+            exit 1
+          }
+          echo "wrangler.toml 已过滤 yiyang.uno 条目，保留 email.0392yy.cn"
+
           pnpm install --no-frozen-lockfile
 
           if [ -n "$use_mail_wasm_parser" ]; then
