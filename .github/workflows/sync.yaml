@@ -5,6 +5,11 @@ on:
     - cron: "0 0 * * 1"
   workflow_dispatch:
 
+# 用内置 GITHUB_TOKEN 而非个人 PAT：PAT 会过期（2026-08 起 GH_PAT 已失效导致 401），
+# merge-upstream 只需要对本仓库的 contents: write 权限。
+permissions:
+  contents: write
+
 jobs:
   sync_latest_from_upstream:
     name: Sync latest commits from upstream repo
@@ -15,4 +20,4 @@ jobs:
       - name: Sync upstream changes
         run: gh repo sync ${{ github.repository }} --source dreamhunter2333/cloudflare_temp_email --branch main
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
