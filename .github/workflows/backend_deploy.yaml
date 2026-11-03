@@ -76,6 +76,13 @@ jobs:
           }
           echo "wrangler.toml 已过滤 yiyang.uno 条目，保留 email.0392yy.cn"
 
+          # 敏感变量改由仓库 secret 注入：BACKEND_TOML 里的明文会出现在公开的
+          # Actions 日志（wrangler 会打印 vars），改成 secret 后 GitHub 会自动掩码。
+          # 未设置对应 secret 时跳过，保持原 BACKEND_TOML 值不变。
+          if [ -n "$JWT_SECRET_VALUE" ] || [ -n "$ADMIN_PASSWORDS_VALUE" ]; then
+            python3 ../.github/scripts/inject_deploy_secrets.py wrangler.toml
+          fi
+
           pnpm install --no-frozen-lockfile
 
           if [ -n "$use_mail_wasm_parser" ]; then
@@ -102,3 +109,6 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           # ✅ 将 secret 映射到环境变量中
           WRANGLER_TOML_CONTENT: ${{ secrets.BACKEND_TOML }}
+          # 敏感变量：设置后覆盖 BACKEND_TOML 里的明文值，且日志中自动掩码
+          JWT_SECRET_VALUE: ${{ secrets.JWT_SECRET }}
+          ADMIN_PASSWORDS_VALUE: ${{ secrets.ADMIN_PASSWORDS }}
