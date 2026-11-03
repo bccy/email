@@ -20,10 +20,12 @@ export const useGlobalState = createGlobalState(
             addressRegex: '',
             needAuth: false,
             adminContact: '',
+            disableUserSystem: false,
             enableUserCreateEmail: false,
             disableAnonymousUserCreateEmail: false,
             disableCustomAddressName: false,
             enableUserDeleteEmail: false,
+            enableMailReadStatus: false,
             enableAutoReply: false,
             enableIndexAbout: false,
             /** @type {string[]} */
@@ -41,7 +43,10 @@ export const useGlobalState = createGlobalState(
             showGithubForUser: true,
             disableAdminPasswordCheck: false,
             enableAddressPassword: false,
+            addressPasswordLoginOnly: false,
             enableAgentEmailInfo: false,
+            enableRedeemCode: false,
+            redeemCodeUrl: '',
             smtpImapProxyConfig: {
                 smtp: {
                     host: '',
@@ -89,7 +94,7 @@ export const useGlobalState = createGlobalState(
         const adminSendBoxTabAddress = ref("");
         const mailboxSplitSize = useStorage('mailboxSplitSize', 0.25);
         const mailListView = useStorage('mailListView', false);
-        const mailListPreviewLineClamp = useStorage('mailListPreviewLineClamp', 2);
+        const mailListPreviewLineClamp = useStorage('mailListPreviewLineClamp', 1);
         const useIframeShowMail = useStorage('useIframeShowMail', false);
         const preferShowTextMail = useStorage('preferShowTextMail', false);
         const userJwt = useStorage('userJwt', '');
@@ -125,6 +130,12 @@ export const useGlobalState = createGlobalState(
             /** @type {null | {domains: string[] | undefined | null, role: string, prefix: string | undefined | null}} */
             user_role: null,
         });
+        const showUserSystem = computed(() =>
+            openSettings.value.fetched && !openSettings.value.disableUserSystem
+        );
+        const showUserMailboxes = computed(() =>
+            showUserSystem.value && !!userJwt.value
+        );
         const showAdminPage = computed(() =>
             !!adminAuth.value
             || userSettings.value.is_admin
@@ -182,6 +193,8 @@ export const useGlobalState = createGlobalState(
             telegramApp,
             isTelegram,
             showAdminPage,
+            showUserSystem,
+            showUserMailboxes,
             userOauth2SessionState,
             userOauth2SessionClientID,
             useSimpleIndex,
