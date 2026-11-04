@@ -95,6 +95,9 @@
     - [管理功能](#管理功能)
     - [多语言与界面](#多语言与界面)
     - [集成与扩展](#集成与扩展)
+  - [API 接口](#api-接口)
+    - [鉴权方式](#鉴权方式)
+    - [接口数量](#接口数量)
   - [技术架构](#技术架构)
     - [系统架构](#系统架构)
     - [技术栈](#技术栈)
@@ -157,6 +160,37 @@
 - [x] 社区移动端管理客户端：[CloudMail](https://github.com/Lur1N77777/CloudMail) 基于 Expo / React Native，面向本项目兼容 API，提供 Android 管理员后台、地址管理、收件/发件/未知邮件、验证码快捷复制、OLED 黑主题和本地分组。
 
 </details>
+
+## API 接口
+
+全部 **133** 个 HTTP 接口按模块分组，方法、路径、鉴权方式与源码位置见完整清单：[API 参考](vitepress-docs/docs/zh/guide/feature/api-reference.md)。
+
+### 鉴权方式
+
+| 方式 | 传递位置 | 适用范围 |
+| --- | --- | --- |
+| 地址 JWT | `Authorization: Bearer <jwt>` | `/api/*`，代表单个邮箱地址 |
+| 用户 JWT | `x-user-token: <jwt>` | `/user_api/*`，代表用户账户 |
+| 管理员密码 | `x-admin-auth` | `/admin/*` |
+| 站点密码 | `x-custom-auth` | 配置 `PASSWORDS` 后，除 `/open_api/*`、`/telegram/*` 外全部接口 |
+| 用户角色令牌 | `x-user-access-token` | 需要角色权限的接口，如发信、绑定邮箱 |
+| 其他 | 请求体 `token` / Telegram `initData` / URL 签名 | 外部发信、Telegram 小程序、Webhook 附件下载 |
+
+### 接口数量
+
+| 模块 | 数量 |
+| --- | --- |
+| 公共 / Open API | 5 |
+| 邮箱地址 API | 23 |
+| 发信 API | 5 |
+| 用户 API | 26 |
+| 管理 API | 59 |
+| Telegram | 10 |
+| 兑换码 | 3 |
+| 根路径 | 2 |
+| **合计** | **133** |
+
+接口可能受环境变量开关限制（如 `ENABLE_USER_CREATE_EMAIL`、`ENABLE_WEBHOOK`、`ENABLE_REDEEM_CODE`），未启用时返回 403 或 404；分页接口统一使用 `limit`（1–100）与 `offset`。
 
 ## 技术架构
 

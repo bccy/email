@@ -95,6 +95,9 @@ Try it now → [https://mail.awsl.uk/](https://mail.awsl.uk/)
     - [Admin Features](#admin-features)
     - [Multi-language \& Interface](#multi-language--interface)
     - [Integration \& Extensions](#integration--extensions)
+  - [API Reference](#api-reference)
+    - [Authentication](#authentication)
+    - [Endpoint Count](#endpoint-count)
   - [Technical Architecture](#technical-architecture)
     - [System Architecture](#system-architecture)
     - [Tech Stack](#tech-stack)
@@ -157,6 +160,37 @@ Try it now → [https://mail.awsl.uk/](https://mail.awsl.uk/)
 - [x] Community mobile admin client: [CloudMail](https://github.com/Lur1N77777/CloudMail) is built with Expo / React Native for this project's compatible API, providing an Android admin console, address management, inbox/sent/unknown mail, quick verification-code copy, OLED black theme, and local grouping.
 
 </details>
+
+## API Reference
+
+All **133** HTTP endpoints are grouped by module; methods, paths, authentication and source locations are listed in the full reference: [API Reference](vitepress-docs/docs/en/guide/feature/api-reference.md).
+
+### Authentication
+
+| Method | Location | Scope |
+| --- | --- | --- |
+| Address JWT | `Authorization: Bearer <jwt>` | `/api/*`; represents a single mailbox |
+| User JWT | `x-user-token: <jwt>` | `/user_api/*`; represents a user account |
+| Admin password | `x-admin-auth` | `/admin/*` |
+| Site password | `x-custom-auth` | Every endpoint except `/open_api/*` and `/telegram/*` when `PASSWORDS` is set |
+| User role token | `x-user-access-token` | Endpoints that require a role, such as sending mail and binding mailboxes |
+| Other | body `token` / Telegram `initData` / URL signature | External sending, Telegram mini app, webhook attachment download |
+
+### Endpoint Count
+
+| Module | Count |
+| --- | --- |
+| Public / Open API | 5 |
+| Mailbox API | 23 |
+| Send Mail API | 5 |
+| User API | 26 |
+| Admin API | 59 |
+| Telegram | 10 |
+| Redemption Codes | 3 |
+| Root | 2 |
+| **Total** | **133** |
+
+Endpoints may be gated by environment variables (for example `ENABLE_USER_CREATE_EMAIL`, `ENABLE_WEBHOOK`, `ENABLE_REDEEM_CODE`) and return 403 or 404 when disabled; paginated endpoints use `limit` (1–100) and `offset`.
 
 ## Technical Architecture
 

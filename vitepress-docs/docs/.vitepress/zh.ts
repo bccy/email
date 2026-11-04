@@ -178,6 +178,7 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
             text: 'API 接口',
             collapsed: false,
             items: [
+                { text: 'API 参考（全部接口）', link: 'feature/api-reference' },
                 { text: '新建邮箱地址 API', link: 'feature/new-address-api' },
                 { text: '查看邮件 API', link: 'feature/mail-api' },
                 { text: 'AI Agent 使用邮箱', link: 'feature/agent-email' },

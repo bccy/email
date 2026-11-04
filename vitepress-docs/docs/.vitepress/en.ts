@@ -178,6 +178,7 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
             text: 'API Endpoints',
             collapsed: false,
             items: [
+                { text: 'API Reference (all endpoints)', link: 'feature/api-reference' },
                 { text: 'New Address API', link: 'feature/new-address-api' },
                 { text: 'View Email API', link: 'feature/mail-api' },
                 { text: 'AI Agent Mailbox Usage', link: 'feature/agent-email' },

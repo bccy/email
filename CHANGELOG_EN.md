@@ -29,6 +29,8 @@
 
 - docs: |User| Document mailbox binding, bound mailbox credential retrieval, and unbinding APIs with dual authentication requirements and request examples
 
+- docs: |Docs| Add a bilingual API reference listing all 133 HTTP endpoints by module (method, path, authentication, source location) and register it in the "API Endpoints" sidebar group; add an API section to the Chinese, English and Japanese READMEs
+
 - perf: |CI| Organize test suites and run a dedicated Webhook UI group alongside API, other browser tests and SMTP/IMAP, with only each group's required services, separate unit/WASM tests and one aggregate check
 
 ## v1.13.0
